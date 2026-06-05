@@ -1,0 +1,48 @@
+// Fly In The Pool - Boards Of Canada
+//
+//cover by trotiflex
+
+
+setcps(81/240)
+
+
+let flyMelody = note(
+  "g2@0.25 g3@0.25 g4@0.25 d3@0.25 b3@0.25 g3@0.25 g2@0.25 g3@0.25 g4@0.25 d3@0.25 b3@0.25 g3@0.25 g2@0.25 g3@0.25 b3@0.25 d3@0.25 a2@0.25 a3@0.25 c4@0.25 d3@0.25 g4@0.25 d3@0.25 c4@0.25 a3@0.25 a2@0.25 a3@0.25 c4@0.25 d3@0.25 g4@0.25 d3@0.25 c4@0.25 d3@0.25 g2@0.25 g3@0.25 g4@0.25 d3@0.25 b3@0.25 g3@0.25 g2@0.25 g3@0.25 g4@0.25 d3@0.25 b3@0.25 g3@0.25 g2@0.25 g3@0.25 b3@0.25 d3@0.25 a2@0.25 a3@0.25 c4@0.25 d3@0.25 g4@0.25 d3@0.25 c4@0.25 a3@0.25 a2@0.25 a3@0.25 c4@0.25 d3@0.25 g4@0.25 d3@0.25 c4@0.25 d3@0.25 c2@0.25 c3@0.25 e3@0.25 g4@0.25 a4@0.25 g4@0.25 e3@0.25 c3@0.25 c2@0.25 c3@0.25 e3@0.25 g4@0.25 a4@0.25 g4@0.25 e3@0.25 c3@0.25 c2@0.25 c3@0.25 e3@0.25 g4@0.25 a4@0.25 g4@0.25 e3@0.25 g4@0.25 d#2@0.25 d#3@0.25 e3@0.25 g4@0.25 a4@0.25 g4@0.25 e3@0.25 g4@0.25 a4@0.25 g4@0.25 e3@0.25 d#3@0.25"
+).s("z_triangle")
+  .gain(0.7)
+  .slow(6)
+  .lpf(perlin.range(500, 850).slow(5))
+  .lpq(2)
+  .vibrato(perlin.range(2, 5).slow(7), perlin.range(0.3, 0.7).slow(4))
+  .detune(perlin.range(-20, 20).slow(3))
+  .room(0.9).roomsize(0.95)
+  .delay(0.5).delaytime(0.4).delayfeedback(0.45)
+  .color("cyan")
+
+
+let flyPad = note("g2@2 d3@2 g2@2 c3@2")
+  .s("z_sine")
+  .gain(0.25)
+  .slow(6)
+  .lpf(300)
+  .room(0.95).roomsize(1)
+  .color("blue")
+
+
+let crackleBase = sound("z_noise")
+  .gain(perlin.range(0.0, 0.09).slow(0.4))
+  .lpf(perlin.range(150, 700).slow(0.9))
+  .hpf(60)
+  .shape(perlin.range(0.05, 0.45).slow(0.7))
+  .pan(perlin.range(-0.5, 0.5).slow(1.8))
+  .fast(2)
+
+let cracklePops = sound("z_noise")
+  .gain(perlin.range(0, 0.1).fast(5))
+  .lpf(400).hpf(300)
+  .speed(perlin.range(4, 12))
+  .fast(3)
+
+
+
+$: stack(flyMelody, flyPad, crackleBase, cracklePops).punchcard()
