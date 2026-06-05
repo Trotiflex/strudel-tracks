@@ -1,0 +1,54 @@
+// Beware the friendly stranger - Boards of Canada
+//
+// Cover by Trotiflex
+
+
+setcps(75/240) 
+
+
+let Melody = note(
+  "bb5@1 cb5@0.5 eb5@1 f5@1 cb5@0.5 ~@0.5 cb5@0.5 ab5@1 cb5@0.5 eb5@1 cb5@0.5 f5@1 gb5@0.5 bb5@1 eb5@1 gb5@0.5 ~@0.5 gb5@0.5 bb5@1 cb5@0.5 eb5@1 cb5@0.5 db5@0.5 ~@0.5 cb5@0.5 db5@0.5 ~@0.5 eb5@0.5 cb5@1 ab5@1.5 gb5@0.5 eb5@1 f5@1 db5@0.5 gb5@0.5 ~@0.5 gb5@0.5 eb5@1 db5@0.5 gb5@0.5 bb5@0.5 ~@0.5 bb5@1 cb5@0.5 eb5@1 f5@1 gb5@0.5 bb5@1 ~@0.5 f5@1 bb5@1 cb5@0.5 eb5@1 db5@0.5 gb5@0.5 bb5@0.5 ~"
+).s("gm_piano")
+  .gain(0.6)
+  .slow(8)
+  .lpf(perlin.range(700, 1100).slow(3))  
+  .vibrato(perlin.range(3, 6).slow(5), perlin.range(0.2, 0.5).slow(4))  
+  .detune(perlin.range(-15, 15).slow(2)) 
+  .delay(0.4).delaytime(0.33).delayfeedback(0.35)
+  .color("green")
+
+
+let Chords = arrange(
+  [2, note("[gb3,bb3,db4]").s("gm_synth_strings_1").gain(0.25).legato(0.95).lpf(800)],
+  [2, note("[d4,f4,bb4]").s("gm_synth_strings_1").gain(0.25).legato(0.95).lpf(800)],
+  [2, note("[gb3,bb3,db4]").s("gm_synth_strings_1").gain(0.25).legato(0.95).lpf(800)],
+  [2, note("[d4,f4,bb4]").s("gm_synth_strings_1").gain(0.25).legato(0.95).lpf(800)],
+).slow(8/8)
+  .detune(perlin.range(-8, 8).slow(3)).color("brown")
+
+
+let crackleBase = sound("z_noise")
+  .gain(perlin.range(0.0, 0.09).slow(0.4))
+  .lpf(perlin.range(150, 900).slow(0.8))
+  .hpf(60)
+  .shape(perlin.range(0.05, 0.4).slow(0.6))
+  .pan(perlin.range(-0.4, 0.4).slow(1.5))
+  .fast(2)
+
+let cracklePops = sound("crackle")
+  .gain(perlin.range(0, 0.12).fast(6))
+  .lpf(500)
+  .hpf(350)
+  .speed(perlin.range(3, 10))
+  .fast(4)
+
+
+let Bass = note("gb2@4 gb2@4 d3@4 gb2@4")
+  .s("z_sine")
+  .gain(0.4)
+  .slow(8)
+  .lpf(300)
+
+$: stack(Melody, Chords, Bass, crackleBase, cracklePops, sound("sn:5") 
+    .gain(0.05)
+    .crush(4)).punchcard()
